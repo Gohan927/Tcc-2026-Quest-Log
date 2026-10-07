@@ -2,22 +2,30 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveMission } from "@/lib/quests";
+import ProgressGrid from "@/Componentes/App/ProgressGrid/ProgressGrid";
 
 export default function NovaMissao() {
     const router = useRouter();
     const [titulo, setTitulo] = useState("");
     const [meta, setMeta] = useState("");
     const [dias, setDias] = useState("");
+    const [diasConcluidos, setDiasConcluidos] = useState([]);
 
-    const diasArray = Array.from({ length: Number(dias) || 0 }, (_, i) => i);
+    const totalDias = Number(dias) || 0;
+
+    function toggleDia(dia) {
+        setDiasConcluidos((atual) =>
+            atual.includes(dia) ? atual.filter((d) => d !== dia) : [...atual, dia]
+        );
+    }
 
     function handleSalvar() {
         const novaMissao = {
             id: crypto.randomUUID(),
             titulo: titulo || "Sem título",
             meta,
-            diasNecessarios: Number(dias) || 0,
-            diasConcluidos: [],
+            diasNecessarios: totalDias,
+            diasConcluidos: diasConcluidos.filter((d) => d < totalDias),
             criadaEm: new Date().toISOString(),
         };
         saveMission(novaMissao);
@@ -53,10 +61,12 @@ export default function NovaMissao() {
                 />
             </div>
 
-            <div className="flex flex-wrap gap-2 mb-10">
-                {diasArray.map((dia) => (
-                    <div key={dia} className="w-8 h-8 bg-[#d9d9d9] border border-gray-400" />
-                ))}
+            <div className="mb-10">
+                <ProgressGrid
+                    diasNecessarios={totalDias}
+                    diasConcluidos={diasConcluidos}
+                    onToggleDia={toggleDia}
+                />
             </div>
 
             <button
