@@ -1,0 +1,7 @@
+* edd8082 feat: adicionei o [id]
+* 39fa84a fix: consertei a navegação
+* b6caa52 Fix: consertei o problema de rota dinâmica para encontrar a p. Nova Missão
+* ce98641 feat: criei a página inicial, drawer, localStorage e layout
+* f8dc588 fetuare/Novos arquivos
+* e6f2778 feat/Setup inicial do projeto
+* cf78f2a Initial commit
