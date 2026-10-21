@@ -1,6 +1,22 @@
 @import "tailwindcss";
 
-theme {
+export default function config() {
+    return {
+        plugins: {
+            "@tailwindcss/postcss": {} 
+        },
+
+    };
+
+}
+
+
+
+
+
+
+
+export default config theme {
     --color-obsidian: #0f0d0a;
     --color-parchment: #e6d7b8;
     --color-gold: #d4af37;
