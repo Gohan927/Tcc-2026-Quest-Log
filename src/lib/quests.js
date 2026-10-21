@@ -22,3 +22,4 @@ export function updateMission(id, dadosAtualizados) {
     );
     localStorage.setItem(STORAGE_KEY, JSON.stringify(missoes));
 }
+JSON
