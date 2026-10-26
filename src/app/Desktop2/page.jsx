@@ -36,3 +36,12 @@ export default function NovaMissao() {
         </div>
     );
 }
+
+import { salvarMissao } from "@/app/actions";
+
+<form action={salvarMissao}>
+  <input name="titulo" />
+  <input name="meta" />
+  <input name="dias" type="number" />
+  <button type="submit">Salvar missão</button>
+</form>
