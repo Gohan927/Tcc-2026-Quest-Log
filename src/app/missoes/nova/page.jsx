@@ -29,7 +29,7 @@ export default function NovaMissao() {
             criadaEm: new Date().toISOString(),
         };
         saveMission(novaMissao);
-        router.push(`/missoes/${novaMissao.id}`);
+        router.push("/");
     }
 
     return (

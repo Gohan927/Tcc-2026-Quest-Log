@@ -48,7 +48,7 @@ export default function PaginaMissoes() {
                         <QuestCard
                             key={missao.id}
                             missao={missao}
-                            onClick={() => router.push(`/missoes/${missao.id}`)}
+                            onClick={() => router.push("/missoes/${missao.id}")}
                         />
                     ))
                 )}
