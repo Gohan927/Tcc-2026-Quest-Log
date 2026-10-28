@@ -1,4 +1,4 @@
-"use server";
+"async";
 
 import { redirect } from "next/navigation";
 import fs from "fs/promises";

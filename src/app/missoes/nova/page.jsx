@@ -19,15 +19,11 @@ export default function NovaMissao() {
         );
     }
 
-    function handleSalvar() {
-        const novaMissao = {
-            id: crypto.randomUUID(),
-            titulo: titulo || "Sem título",
-            meta,
-            diasNecessarios: totalDias,
-            diasConcluidos: diasConcluidos.filter((d) => d < totalDias),
-            criadaEm: new Date().toISOString(),
-        };
+    async function handleSalvar() {
+        const novaMissao = { /* ...igual ao que você já tem... */ };
+        await saveMission(novaMissao);
+        router.push("/");
+    }
         saveMission(novaMissao);
         router.push(`/missoes/${novaMissao.id}`);
     }

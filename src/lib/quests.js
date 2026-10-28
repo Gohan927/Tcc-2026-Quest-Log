@@ -1,25 +1,39 @@
-const STORAGE_KEY = "questlog-missions";
+"async";
+import { promises as fs } from "fs";
+import path from "path";
+import { revalidatePath } from "next/cache";
 
-export function getMissions() {
-    if (typeof window === "undefined") return [];
-    const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+const ARQUIVO = path.join(process.cwd(), "data", "missions.json");
+
+async function ler() {
+    try {
+        const texto = await fs.readFile(ARQUIVO, "utf-8");
+        return JSON.parse(texto);
+    } catch {
+        return []; // arquivo ainda não existe
+    }
 }
 
-export function saveMission(missao) {
-    const missoes = getMissions();
-    missoes.push(missao);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(missoes));
+async function escrever(missoes) {
+    await fs.mkdir(path.dirname(ARQUIVO), { recursive: true });
+    await fs.writeFile(ARQUIVO, JSON.stringify(missoes, null, 2), "utf-8");
 }
 
-export function getMissionById(id) {
-    return getMissions().find((m) => m.id === id);
+export async function getMissions() {
+    return await ler();
 }
 
-export function updateMission(id, dadosAtualizados) {
-    const missoes = getMissions().map((m) =>
-        m.id === id ? { ...m, ...dadosAtualizados } : m
-    );
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(missoes));
+export async function saveMission(missao) {
+    const missoes = await ler();
+    const i = missoes.findIndex((m) => m.id === missao.id);
+    if (i >= 0) missoes[i] = missao; // atualiza (ex.: marcar dias)
+    else missoes.push(missao);       // cria
+    await escrever(missoes);
+    revalidatePath("/", "layout");
 }
-JSON
+
+export async function deleteMission(id) {
+    const missoes = await ler();
+    await escrever(missoes.filter((m) => m.id !== id));
+    revalidatePath("/", "layout");
+}
