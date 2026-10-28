@@ -11,17 +11,19 @@ export default function PaginaMissao() {
     const [carregado, setCarregado] = useState(false);
 
     useEffect(() => {
-        setMissao(getMissionById(id) || null);
-        setCarregado(true);
+        getMissionById(id).then((m) => {
+            setMissao(m || null);
+            setCarregado(true);
+        });
     }, [id]);
 
-    function toggleDia(dia) {
+    async function toggleDia(dia) {
         const diasConcluidos = missao.diasConcluidos.includes(dia)
             ? missao.diasConcluidos.filter((d) => d !== dia)
             : [...missao.diasConcluidos, dia];
-
-        updateMission(id, { diasConcluidos });
-        setMissao({ ...missao, diasConcluidos });
+    
+        setMissao({ ...missao, diasConcluidos }); // atualiza a tela na hora
+        await updateMission(id, { diasConcluidos });
     }
 
     if (!carregado) return <p className="px-16 py-10">Carregando...</p>;

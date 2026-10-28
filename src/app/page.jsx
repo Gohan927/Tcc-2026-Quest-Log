@@ -3,24 +3,20 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getMissions } from "@/lib/quests";
 import QuestCard from "@/Componentes/QuestCards/QuestCard";
+import BotaoNovaMissao from "@/Componentes/App/BotaoNovaMissao/BotaoNovaMissao";
 
 export default function PaginaMissoes() {
     const router = useRouter();
     const [missoes, setMissoes] = useState([]);
 
     useEffect(() => {
-        setMissoes(getMissions());
+        getMissions().then(setMissoes);
     }, []);
 
     return (
         <div className="relative min-h-screen bg-white px-16 py-10">
             {/* Botão Nova Missão */}
-            <button
-                onClick={() => router.push("/missoes/nova")}
-                className="bg-[#29be44] text-white font-['Holtwood_One_SC'] text-xl px-8 py-4 hover:brightness-95 transition"
-            >
-                Nova Missão
-            </button>
+            <BotaoNovaMissao/>
 
             {/* Avatar */}
             <div className="absolute top-6 right-8 size-16 rounded-full overflow-hidden">

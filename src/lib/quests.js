@@ -1,4 +1,4 @@
-"async";
+"use server";
 import { promises as fs } from "fs";
 import path from "path";
 import { revalidatePath } from "next/cache";
@@ -35,5 +35,19 @@ export async function saveMission(missao) {
 export async function deleteMission(id) {
     const missoes = await ler();
     await escrever(missoes.filter((m) => m.id !== id));
+    revalidatePath("/", "layout");
+}
+
+export async function getMissionById(id) {
+    const missoes = await ler();
+    return missoes.find((m) => m.id === id) || null;
+}
+
+export async function updateMission(id, alteracoes) {
+    const missoes = await ler();
+    const novas = missoes.map((m) =>
+        m.id === id ? { ...m, ...alteracoes } : m
+    );
+    await escrever(novas);
     revalidatePath("/", "layout");
 }

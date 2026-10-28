@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { saveMission } from "@/lib/quests";
 import ProgressGrid from "@/Componentes/App/ProgressGrid/ProgressGrid";
 
@@ -19,13 +19,19 @@ export default function NovaMissao() {
         );
     }
 
-    async function handleSalvar() {
-        const novaMissao = { /* ...igual ao que você já tem... */ };
+    async function handleSalvar() { //O PROBLEMA TÁ aqui <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        const novaMissao = {
+            id: crypto.randomUUID(),
+            titulo: titulo || "Sem título",
+            meta,
+            diasNecessarios: totalDias,
+            diasConcluidos: diasConcluidos.filter((d) => d < totalDias),
+            criadaEm: new Date().toISOString(),
+        };
         await saveMission(novaMissao);
-        router.push("/");
-    }
-        saveMission(novaMissao);
-        router.push(`/missoes/${novaMissao.id}`);
+        router.push(`@/`);
+        
+        
     }
 
     return (
